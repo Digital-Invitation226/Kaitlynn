@@ -462,7 +462,7 @@
       </div>
 
       <div class="mi reveal" onclick="openLB(11,'First birthday outfit 🎀')">
-        <img id="img_11" src="./Photos/Photo_11.JPG" alt="Kaitlynn"/>
+        <img id="img_11" src="./Photos/Photo_13.jpg" alt="Kaitlynn"/>
         <div class="mi-ph" id="ph_11"><div class="pi">🎀</div><div class="pn">11</div><div class="pt">Photo #11 · Outfit / dress</div></div>
       </div>
 
@@ -472,7 +472,7 @@
       </div>
 
       <div class="mi reveal" onclick="openLB(13,'With the whole family 👨‍👩‍👧')">
-        <img id="img_13" src="./Photos/Photo_13.jpg" alt="Kaitlynn"/>
+        <img id="img_13" src="./Photos/Photo_11.JPG" alt="Kaitlynn"/>
         <div class="mi-ph" id="ph_13"><div class="pi">👨‍👩‍👧</div><div class="pn">13</div><div class="pt">Photo #13 · Family photo</div></div>
       </div>
 
@@ -697,9 +697,6 @@ function openLB(n, c){
   document.getElementById('lbCap').textContent = caps[n] || c;
   document.body.style.overflow = 'hidden';
 
-  // Rely on the loader's own verdict (img.style.display) rather than
-  // re-deriving it from src, so the lightbox always agrees with what's
-  // actually on the page.
   const hasPhoto = srcImg && srcImg.style.display === 'block';
 
   if (hasPhoto) {
@@ -746,10 +743,7 @@ function openLBdress(){
    • If src is set and the image loads → show image, hide placeholder
    • If src is set but fails to load → hide image, show placeholder
    • Handles images that are already cached/complete BEFORE this
-     script runs (this was the bug: onload never fires for images
-     the browser already finished loading, so Photo_16 — and any
-     photo you'd previously previewed — stayed stuck on the
-     placeholder even though the file loaded fine).
+     script runs.
 ──────────────────────────────────────────────────────────────── */
 function initPhotos() {
   for (let n = 1; n <= 16; n++) {
@@ -772,9 +766,6 @@ function initPhotos() {
     img.onerror = showPh;
 
     if (img.complete) {
-      // Image already finished loading (or failed) before we attached
-      // the handlers above — resolve it immediately instead of waiting
-      // for an event that will never fire.
       if (img.naturalWidth > 0) showImg(); else showPh();
     } else {
       img.style.display = 'none';
