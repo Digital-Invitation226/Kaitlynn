@@ -356,6 +356,32 @@
     footer{background:var(--brown);color:rgba(255,245,232,0.45);text-align:center;padding:32px 24px;font-size:0.85rem;position:relative;z-index:1;}
     footer strong{color:var(--blush2);font-family:'Dancing Script',cursive;font-size:1.1rem;}
 
+    /* ── FLOATING RSVP BUTTON ── */
+    .rsvp-float{
+      position:fixed;bottom:22px;right:20px;z-index:500;
+      background:linear-gradient(90deg,var(--terra),var(--terra2));color:var(--ivory);
+      font-family:'Josefin Sans',sans-serif;font-weight:400;font-size:0.76rem;
+      letter-spacing:0.14em;text-transform:uppercase;padding:14px 22px;border-radius:50px;
+      box-shadow:0 10px 30px rgba(192,97,59,0.38);text-decoration:none;
+      display:flex;align-items:center;gap:8px;
+      opacity:0;transform:translateY(18px) scale(0.92);pointer-events:none;
+      transition:opacity 0.35s ease, transform 0.35s ease, box-shadow 0.25s ease;
+    }
+    .rsvp-float.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
+    .rsvp-float:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 14px 38px rgba(192,97,59,0.46);}
+    .rsvp-float .rf-icon{font-size:1rem;animation:rfPulse 2.2s ease-in-out infinite;}
+    @keyframes rfPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.18);}}
+    @media(max-width:480px){
+      .rsvp-float{bottom:16px;right:16px;padding:12px 18px;font-size:0.68rem;}
+    }
+
+    /* ── ADMIN LINK (deliberately subtle — blends into the footer text) ── */
+    .admin-dot{
+      color:inherit;opacity:1;text-decoration:none;padding:0 7px;cursor:default;
+      transition:color 0.2s ease;
+    }
+    .admin-dot:hover{color:rgba(255,245,232,0.85);cursor:pointer;}
+
     .hero-photo-wrap img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50% 50% 0 0 / 55% 55% 0 0;}
     .fg-big img,.fg-sm img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;}
     .fg-big:hover img,.fg-sm:hover img{transform:scale(1.05);}
@@ -373,6 +399,8 @@
 <body>
 
 <div id="floaters"></div>
+
+<a href="#rsvp" class="rsvp-float" id="rsvpFloat"><span class="rf-icon">🌈</span>RSVP Now</a>
 
 <div class="info-bar"> </div>
 
@@ -750,7 +778,7 @@
 <footer>
   <p style="margin-top:7px;font-size:0.77rem;">August 16, 2025 &nbsp;·&nbsp; Quezon City &nbsp;·&nbsp; Baptism &amp; 1st Birthday of Kaitlynn</p>
   <p style="margin-top:18px;font-size:0.67rem;letter-spacing:0.16em;text-transform:uppercase;opacity:0.44;">
-    © Kaitlynn's Birthday Celebration. All Rights Reserved.
+    © Kaitlynn's Birthday Celebration. All Rights Reserved. <a href="dashboard.html" class="admin-dot" target="_blank" rel="noopener">·</a>
   </p>
 </footer>
 
@@ -895,6 +923,46 @@ const obs = new IntersectionObserver(entries=>{
   entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
 },{threshold:0.08});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* ── FLOATING RSVP BUTTON VISIBILITY ──────────────────────────────
+   Shows once the visitor scrolls past the hero, and hides again
+   while the RSVP section itself is on screen (no point nagging
+   someone who is already looking at the form).
+──────────────────────────────────────────────────────────────── */
+(function(){
+  const floatBtn   = document.getElementById('rsvpFloat');
+  const rsvpSection = document.getElementById('rsvp');
+  const heroSection  = document.querySelector('.hero');
+  if (!floatBtn || !rsvpSection || !heroSection) return;
+
+  let pastHero    = false;
+  let rsvpVisible = false;
+
+  function update(){
+    if (pastHero && !rsvpVisible) {
+      floatBtn.classList.add('show');
+    } else {
+      floatBtn.classList.remove('show');
+    }
+  }
+
+  const heroObs = new IntersectionObserver(entries=>{
+    entries.forEach(entry => { pastHero = !entry.isIntersecting; });
+    update();
+  }, { threshold: 0 });
+  heroObs.observe(heroSection);
+
+  const rsvpObs = new IntersectionObserver(entries=>{
+    entries.forEach(entry => { rsvpVisible = entry.isIntersecting; });
+    update();
+  }, { threshold: 0.15 });
+  rsvpObs.observe(rsvpSection);
+
+  floatBtn.addEventListener('click', function(e){
+    e.preventDefault();
+    rsvpSection.scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+})();
 
 /* ══════════════════════════════════════════
    RSVP — connects to a Google Apps Script
