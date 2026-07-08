@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kaitlynn's RSVP Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Josefin+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --terra:#C0613B; --terra2:#D07A57; --blush:#D4A5A0; --blush2:#E8C5BC;
+    --sand:#E8D5B0; --sand2:#F0E3C8; --cream:#FAF3E8; --ivory:#FFFCF7;
+    --sage:#8B9E80; --sage2:#A8BB9E;
+    --brown:#5C3D2E; --brown2:#7A5545; --brown3:#A07060;
+    --good:#6B8E5A; --bad:#C0613B; --pending:#C08040;
+    --shadow:rgba(92,61,46,0.12);
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--cream);font-family:'Cormorant Garamond',serif;color:var(--brown);
+    min-height:100vh;padding:clamp(16px,4vw,40px);
+  }
+  header{max-width:1180px;margin:0 auto 28px;text-align:center;}
+  header .eyebrow{
+    font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:0.7rem;
+    letter-spacing:0.3em;text-transform:uppercase;color:var(--terra2);margin-bottom:6px;
+  }
+  header h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.6rem);color:var(--brown);}
+  header h1 em{font-style:italic;color:var(--terra);}
+  header p{color:var(--brown3);font-size:1.02rem;margin-top:6px;}
+
+  .wrap{max-width:1180px;margin:0 auto;}
+
+  .toolbar{
+    display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
+    margin-bottom:22px;
+  }
+  .search-box{
+    flex:1;min-width:220px;position:relative;
+  }
+  .search-box input{
+    width:100%;padding:12px 18px 12px 42px;border-radius:50px;border:1.5px solid rgba(192,97,59,0.22);
+    background:var(--ivory);font-family:'Cormorant Garamond',serif;font-size:1.02rem;color:var(--brown);outline:none;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  .search-box input:focus{border-color:var(--terra2);box-shadow:0 0 0 3px rgba(192,97,59,0.12);}
+  .search-box::before{
+    content:'🔍';position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:0.95rem;opacity:0.6;
+  }
+  .btn{
+    font-family:'Josefin Sans',sans-serif;font-weight:400;font-size:0.78rem;letter-spacing:0.12em;
+    text-transform:uppercase;padding:11px 20px;border-radius:50px;border:1.5px solid rgba(192,97,59,0.25);
+    background:var(--ivory);color:var(--brown2);cursor:pointer;transition:all .2s;white-space:nowrap;
+  }
+  .btn:hover{background:var(--terra);color:var(--ivory);border-color:var(--terra);}
+  .btn.primary{background:var(--terra);color:var(--ivory);}
+  .btn.primary:hover{background:var(--terra2);}
+  .btn:disabled{opacity:0.5;cursor:not-allowed;background:var(--ivory);color:var(--brown2);border-color:rgba(192,97,59,0.25);}
+
+  .filter-chips{display:flex;gap:8px;flex-wrap:wrap;}
+  .chip{
+    font-family:'Josefin Sans',sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;
+    padding:8px 16px;border-radius:50px;border:1.5px solid rgba(192,97,59,0.2);background:var(--ivory);
+    color:var(--brown2);cursor:pointer;transition:all .2s;
+  }
+  .chip.active{background:var(--terra);color:var(--ivory);border-color:var(--terra);}
+
+  .stats{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:26px;
+  }
+  .stat-card{
+    background:var(--ivory);border-radius:20px;padding:20px 22px;border:1.5px solid rgba(192,97,59,0.14);
+    box-shadow:0 6px 22px var(--shadow);position:relative;overflow:hidden;
+  }
+  .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
+  .stat-card.total::before{background:linear-gradient(90deg,var(--terra),var(--terra2));}
+  .stat-card.yes::before{background:var(--good);}
+  .stat-card.no::before{background:var(--bad);}
+  .stat-card.guests::before{background:linear-gradient(90deg,var(--sage),var(--sage2));}
+  .stat-num{font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--brown);line-height:1;}
+  .stat-lbl{
+    font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:0.66rem;letter-spacing:0.16em;
+    text-transform:uppercase;color:var(--brown3);margin-top:8px;
+  }
+
+  .table-card{
+    background:var(--ivory);border-radius:24px;border:1.5px solid rgba(192,97,59,0.14);
+    box-shadow:0 8px 30px var(--shadow);overflow:hidden;
+  }
+  .table-scroll{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;min-width:720px;}
+  thead th{
+    font-family:'Josefin Sans',sans-serif;font-weight:400;font-size:0.68rem;letter-spacing:0.12em;
+    text-transform:uppercase;color:var(--brown2);text-align:left;padding:16px 18px;
+    background:var(--sand2);cursor:pointer;user-select:none;white-space:nowrap;
+    border-bottom:1.5px solid rgba(192,97,59,0.18);
+  }
+  thead th:hover{color:var(--terra);}
+  thead th .arrow{font-size:0.65rem;margin-left:4px;opacity:0.5;}
+  tbody td{
+    padding:14px 18px;font-size:0.98rem;color:var(--brown);border-bottom:1px solid rgba(192,97,59,0.08);
+    vertical-align:top;
+  }
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:rgba(192,97,59,0.04);}
+  .msg-cell{max-width:220px;color:var(--brown3);font-style:italic;font-size:0.92rem;}
+  .badge{
+    display:inline-block;padding:5px 13px;border-radius:50px;font-family:'Josefin Sans',sans-serif;
+    font-size:0.68rem;letter-spacing:0.06em;text-transform:uppercase;font-weight:400;
+  }
+  .badge.yes{background:rgba(107,142,90,0.16);color:var(--good);}
+  .badge.no{background:rgba(192,97,59,0.14);color:var(--bad);}
+  .ts{font-size:0.84rem;color:var(--brown3);white-space:nowrap;}
+
+  .empty-state, .config-state{
+    text-align:center;padding:60px 24px;color:var(--brown3);
+  }
+  .empty-state .ico, .config-state .ico{font-size:2.6rem;margin-bottom:14px;display:block;}
+  .config-state{background:var(--ivory);border-radius:24px;border:1.5px solid rgba(192,97,59,0.14);
+    box-shadow:0 8px 30px var(--shadow);max-width:1180px;margin:0 auto;}
+  .config-state code{
+    display:block;max-width:620px;margin:16px auto 0;background:var(--sand2);border-radius:12px;
+    padding:14px 18px;font-family:monospace;font-size:0.86rem;color:var(--brown);text-align:left;
+    word-break:break-all;
+  }
+
+  .loader{
+    display:flex;align-items:center;justify-content:center;gap:10px;padding:60px 24px;color:var(--brown3);
+  }
+  .spinner{
+    width:22px;height:22px;border-radius:50%;border:3px solid rgba(192,97,59,0.2);
+    border-top-color:var(--terra);animation:spin 0.8s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  footer{text-align:center;color:var(--brown3);font-size:0.85rem;margin-top:26px;}
+
+  /* ── PASSWORD LOCK SCREEN ── */
+  #lockScreen{
+    position:fixed;inset:0;z-index:2000;background:var(--cream);
+    display:flex;align-items:center;justify-content:center;padding:24px;
+  }
+  #lockScreen.hidden{display:none;}
+  .lock-card{
+    background:var(--ivory);border-radius:28px;padding:clamp(32px,7vw,48px) clamp(28px,7vw,44px);
+    max-width:380px;width:100%;text-align:center;box-shadow:0 16px 50px var(--shadow);
+    border:1.5px solid rgba(192,97,59,0.16);position:relative;overflow:hidden;
+  }
+  .lock-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--terra),var(--blush),var(--sage2));}
+  .lock-icon{font-size:2.4rem;margin-bottom:12px;display:block;}
+  .lock-card h2{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--brown);margin-bottom:8px;}
+  .lock-card p{color:var(--brown3);font-size:0.95rem;margin-bottom:22px;}
+  .lock-input{
+    width:100%;padding:13px 18px;border-radius:50px;border:1.5px solid rgba(192,97,59,0.22);
+    background:var(--cream);font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--brown);
+    outline:none;text-align:center;margin-bottom:14px;transition:border-color .2s, box-shadow .2s;
+  }
+  .lock-input:focus{border-color:var(--terra2);box-shadow:0 0 0 3px rgba(192,97,59,0.12);}
+  .lock-btn{
+    width:100%;padding:14px 20px;border-radius:50px;border:none;
+    background:linear-gradient(90deg,var(--terra),var(--terra2));color:var(--ivory);
+    font-family:'Josefin Sans',sans-serif;font-weight:400;font-size:0.8rem;letter-spacing:0.16em;
+    text-transform:uppercase;cursor:pointer;transition:transform .2s, box-shadow .2s;
+    box-shadow:0 8px 24px rgba(192,97,59,0.28);
+  }
+  .lock-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(192,97,59,0.34);}
+  .lock-error{color:var(--bad);font-size:0.86rem;margin-top:12px;min-height:1.2em;}
+
+  #dashApp{display:none;}
+  #dashApp.unlocked{display:block;}
+
+  .signout-link{
+    position:fixed;top:16px;right:18px;z-index:50;
+    font-family:'Josefin Sans',sans-serif;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--brown3);opacity:0.55;text-decoration:none;cursor:pointer;transition:opacity .2s;
+  }
+  .signout-link:hover{opacity:1;}
+
+  @media(max-width:560px){
+    .toolbar{flex-direction:column;align-items:stretch;}
+    thead th, tbody td{padding:12px 12px;font-size:0.9rem;}
+  }
+</style>
+</head>
+<body>
+
+<div id="lockScreen">
+  <div class="lock-card">
+    <span class="lock-icon">🔒</span>
+    <h2>Family Access Only</h2>
+    <p>Enter the password to view Kaitlynn's RSVP dashboard.</p>
+    <input type="password" class="lock-input" id="lockInput" placeholder="Password" autocomplete="off"/>
+    <button class="lock-btn" id="lockSubmit">Unlock Dashboard</button>
+    <div class="lock-error" id="lockError"></div>
+  </div>
+</div>
+
+<a href="#" class="signout-link" id="signOutLink" style="display:none;">🔒 Lock Dashboard</a>
+
+<div id="dashApp">
+
+<header>
+  <p class="eyebrow">Kaitlynn's Celebration</p>
+  <h1>RSVP <em>Dashboard</em></h1>
+  <p>Track who's coming, how many guests, and any sweet messages for Kaitlynn.</p>
+</header>
+
+<div class="wrap">
+
+  <div class="toolbar">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search by name, contact, or message..."/>
+    </div>
+    <div class="filter-chips" id="filterChips">
+      <button class="chip active" data-filter="all">All</button>
+      <button class="chip" data-filter="Yes">Attending</button>
+      <button class="chip" data-filter="No">Not Attending</button>
+    </div>
+    <button class="btn" id="refreshBtn">🔄 Refresh</button>
+    <button class="btn primary" id="exportBtn">⬇ Export CSV</button>
+  </div>
+
+  <div class="stats" id="stats" style="display:none;">
+    <div class="stat-card total">
+      <div class="stat-num" id="statTotal">0</div>
+      <div class="stat-lbl">Total Responses</div>
+    </div>
+    <div class="stat-card yes">
+      <div class="stat-num" id="statYes">0</div>
+      <div class="stat-lbl">Attending</div>
+    </div>
+    <div class="stat-card no">
+      <div class="stat-num" id="statNo">0</div>
+      <div class="stat-lbl">Not Attending</div>
+    </div>
+    <div class="stat-card guests">
+      <div class="stat-num" id="statGuests">0</div>
+      <div class="stat-lbl">Total Headcount</div>
+    </div>
+  </div>
+
+  <div id="content">
+    <div class="loader"><div class="spinner"></div><span>Loading RSVPs…</span></div>
+  </div>
+
+</div>
+
+<footer>Data is pulled live from the RSVP Google Sheet · Refresh anytime to see new responses</footer>
+
+</div><!-- /#dashApp -->
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   CONFIG — paste the SAME Google Apps Script Web App URL you used
+   on the invitation page's RSVP form. This dashboard calls it with
+   a GET request, and the script returns every row as JSON.
+   See the setup guide for how to get this URL.
+══════════════════════════════════════════════════════════════════ */
+const RSVP_SCRIPT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+let allRows = [];
+let currentFilter = 'all';
+let sortKey = 'Timestamp';
+let sortDir = -1; // newest first
+
+const contentEl   = document.getElementById('content');
+const statsEl      = document.getElementById('stats');
+const searchInput  = document.getElementById('searchInput');
+const refreshBtn   = document.getElementById('refreshBtn');
+const exportBtn    = document.getElementById('exportBtn');
+const filterChips  = document.getElementById('filterChips');
+
+function isConfigured(){
+  return RSVP_SCRIPT_URL.indexOf('PASTE_YOUR') === -1;
+}
+
+function showConfigNeeded(){
+  statsEl.style.display = 'none';
+  contentEl.innerHTML = `
+    <div class="config-state">
+      <span class="ico">🔧</span>
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:8px;">Dashboard not connected yet</h3>
+      <p>Paste your Google Apps Script Web App URL into the <strong>RSVP_SCRIPT_URL</strong> constant near the top of this file's script — the same URL used on the invitation page.</p>
+      <code>const RSVP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycb.../exec";</code>
+    </div>`;
+}
+
+function showLoading(){
+  contentEl.innerHTML = `<div class="loader"><div class="spinner"></div><span>Loading RSVPs…</span></div>`;
+}
+
+function showError(msg){
+  statsEl.style.display = 'none';
+  contentEl.innerHTML = `
+    <div class="empty-state">
+      <span class="ico">⚠️</span>
+      <p>${msg}</p>
+    </div>`;
+}
+
+function fetchData(){
+  if(!isConfigured()){ showConfigNeeded(); return; }
+  showLoading();
+  refreshBtn.disabled = true;
+
+  fetch(RSVP_SCRIPT_URL, { method:'GET' })
+    .then(r => r.json())
+    .then(data => {
+      allRows = Array.isArray(data) ? data : [];
+      render();
+    })
+    .catch(() => {
+      showError('Couldn\u2019t load RSVP data. Check your internet connection or that the Apps Script deployment is still set to "Anyone" access.');
+    })
+    .finally(() => { refreshBtn.disabled = false; });
+}
+
+function normAttending(v){
+  const s = String(v || '').trim().toLowerCase();
+  if (s === 'yes') return 'Yes';
+  if (s === 'no') return 'No';
+  return v || '';
+}
+
+function getFiltered(){
+  const q = searchInput.value.trim().toLowerCase();
+  return allRows.filter(row => {
+    const attending = normAttending(row.attending || row.Attending);
+    if (currentFilter !== 'all' && attending !== currentFilter) return false;
+    if (!q) return true;
+    const haystack = [
+      row.name || row.Name,
+      row.contact || row.Contact,
+      row.message || row.Message
+    ].join(' ').toLowerCase();
+    return haystack.indexOf(q) !== -1;
+  });
+}
+
+function getSorted(rows){
+  const keyMap = { Timestamp:'Timestamp', Name:'name', Guests:'guests', Attending:'attending' };
+  return rows.slice().sort((a,b) => {
+    let av = a[sortKey] ?? a[keyMap[sortKey]] ?? '';
+    let bv = b[sortKey] ?? b[keyMap[sortKey]] ?? '';
+    if (sortKey === 'Guests') { av = Number(av)||0; bv = Number(bv)||0; }
+    if (av < bv) return -1 * sortDir;
+    if (av > bv) return 1 * sortDir;
+    return 0;
+  });
+}
+
+function formatTs(v){
+  if(!v) return '—';
+  const d = new Date(v);
+  if (isNaN(d)) return String(v);
+  return d.toLocaleString(undefined, { month:'short', day:'numeric', year:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+
+function render(){
+  const rows = getSorted(getFiltered());
+
+  // stats always computed from the full unfiltered set
+  const total = allRows.length;
+  const yesRows = allRows.filter(r => normAttending(r.attending || r.Attending) === 'Yes');
+  const noRows  = allRows.filter(r => normAttending(r.attending || r.Attending) === 'No');
+  const headcount = yesRows.reduce((sum,r) => sum + (Number(r.guests ?? r.Guests) || 1), 0);
+
+  document.getElementById('statTotal').textContent  = total;
+  document.getElementById('statYes').textContent     = yesRows.length;
+  document.getElementById('statNo').textContent      = noRows.length;
+  document.getElementById('statGuests').textContent  = headcount;
+  statsEl.style.display = total ? 'grid' : 'none';
+
+  if (!total){
+    contentEl.innerHTML = `
+      <div class="empty-state">
+        <span class="ico">📭</span>
+        <p>No RSVPs yet — once guests start responding, they'll show up here.</p>
+      </div>`;
+    return;
+  }
+
+  if (!rows.length){
+    contentEl.innerHTML = `
+      <div class="empty-state">
+        <span class="ico">🔍</span>
+        <p>No responses match your search or filter.</p>
+      </div>`;
+    return;
+  }
+
+  const arrow = (key) => sortKey === key ? (sortDir === 1 ? '▲' : '▼') : '';
+
+  const bodyRows = rows.map(r => {
+    const name      = r.name ?? r.Name ?? '—';
+    const attending = normAttending(r.attending ?? r.Attending);
+    const guests    = r.guests ?? r.Guests ?? '1';
+    const contact   = r.contact ?? r.Contact ?? '—';
+    const message   = r.message ?? r.Message ?? '';
+    const ts        = r.Timestamp ?? r.timestamp ?? '';
+    return `
+      <tr>
+        <td>${escapeHtml(name)}</td>
+        <td><span class="badge ${attending === 'Yes' ? 'yes' : 'no'}">${attending === 'Yes' ? 'Attending' : 'Not Attending'}</span></td>
+        <td>${escapeHtml(String(guests))}</td>
+        <td>${escapeHtml(contact)}</td>
+        <td class="msg-cell">${message ? escapeHtml(message) : '<span style="opacity:.5">—</span>'}</td>
+        <td class="ts">${formatTs(ts)}</td>
+      </tr>`;
+  }).join('');
+
+  contentEl.innerHTML = `
+    <div class="table-card">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th data-key="Name">Name <span class="arrow">${arrow('Name')}</span></th>
+              <th data-key="Attending">Status <span class="arrow">${arrow('Attending')}</span></th>
+              <th data-key="Guests">Guests <span class="arrow">${arrow('Guests')}</span></th>
+              <th>Contact</th>
+              <th>Message</th>
+              <th data-key="Timestamp">Submitted <span class="arrow">${arrow('Timestamp')}</span></th>
+            </tr>
+          </thead>
+          <tbody>${bodyRows}</tbody>
+        </table>
+      </div>
+    </div>`;
+
+  contentEl.querySelectorAll('thead th[data-key]').forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.getAttribute('data-key');
+      if (sortKey === key) { sortDir *= -1; } else { sortKey = key; sortDir = 1; }
+      render();
+    });
+  });
+}
+
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function exportCsv(){
+  const rows = getSorted(getFiltered());
+  if (!rows.length) return;
+  const headers = ['Name','Attending','Guests','Contact','Message','Timestamp'];
+  const csvRows = [headers.join(',')];
+  rows.forEach(r => {
+    const line = [
+      r.name ?? r.Name ?? '',
+      normAttending(r.attending ?? r.Attending),
+      r.guests ?? r.Guests ?? '',
+      r.contact ?? r.Contact ?? '',
+      r.message ?? r.Message ?? '',
+      r.Timestamp ?? r.timestamp ?? ''
+    ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(',');
+    csvRows.push(line);
+  });
+  const blob = new Blob([csvRows.join('\n')], { type:'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = 'kaitlynn-rsvp-list.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+filterChips.addEventListener('click', (e) => {
+  const btn = e.target.closest('.chip');
+  if (!btn) return;
+  filterChips.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = btn.getAttribute('data-filter');
+  render();
+});
+
+searchInput.addEventListener('input', render);
+refreshBtn.addEventListener('click', fetchData);
+exportBtn.addEventListener('click', exportCsv);
+
+/* ══════════════════════════════════════════════════════════════
+   PASSWORD GATE
+   The password is never stored in plain text — this checks the
+   SHA-256 hash of what's typed against DASHBOARD_PASSWORD_HASH.
+   Default password is "kaitlynn2025" — change it! To set a new
+   one, compute its SHA-256 hash and paste it below. You can ask
+   Claude to generate the hash for any password you choose, or run
+   this in a browser console:
+     crypto.subtle.digest('SHA-256', new TextEncoder().encode('yourpassword'))
+       .then(b => console.log(Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')))
+
+   NOTE: this is a light deterrent, not real security — anyone who
+   views the page source can see the hash and, given enough time,
+   could brute-force a weak password. It's meant to keep casual
+   visitors out, not to protect sensitive data from a determined
+   attacker. Don't put anything truly sensitive behind this alone.
+══════════════════════════════════════════════════════════════════ */
+const DASHBOARD_PASSWORD_HASH = "10304029b25ccb804cd6d9b414ec01f6109a7e809b834b4a8129e1d23892083f"; // default: kaitlynn2025
+const UNLOCK_KEY = 'kaitlynn_dash_unlocked';
+
+const lockScreen  = document.getElementById('lockScreen');
+const lockInput   = document.getElementById('lockInput');
+const lockSubmit  = document.getElementById('lockSubmit');
+const lockError   = document.getElementById('lockError');
+const dashApp     = document.getElementById('dashApp');
+const signOutLink = document.getElementById('signOutLink');
+
+async function sha256(text){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function unlockDashboard(){
+  lockScreen.classList.add('hidden');
+  dashApp.classList.add('unlocked');
+  signOutLink.style.display = 'block';
+  fetchData();
+}
+
+async function tryUnlock(){
+  const entered = lockInput.value;
+  if (!entered){
+    lockError.textContent = 'Please enter the password.';
+    return;
+  }
+  const hash = await sha256(entered);
+  if (hash === DASHBOARD_PASSWORD_HASH){
+    localStorage.setItem(UNLOCK_KEY, 'true');
+    lockError.textContent = '';
+    unlockDashboard();
+  } else {
+    lockError.textContent = 'Incorrect password — please try again.';
+    lockInput.value = '';
+    lockInput.focus();
+  }
+}
+
+lockSubmit.addEventListener('click', tryUnlock);
+lockInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryUnlock(); });
+
+signOutLink.addEventListener('click', (e) => {
+  e.preventDefault();
+  localStorage.removeItem(UNLOCK_KEY);
+  dashApp.classList.remove('unlocked');
+  signOutLink.style.display = 'none';
+  lockScreen.classList.remove('hidden');
+  lockInput.value = '';
+  lockInput.focus();
+});
+
+if (localStorage.getItem(UNLOCK_KEY) === 'true'){
+  unlockDashboard();
+} else {
+  lockInput.focus();
+}
+</script>
+</body>
+</html>
