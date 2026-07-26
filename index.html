@@ -291,52 +291,6 @@
       .dress-photo{aspect-ratio:3/2;}
     }
 
-    /* ══════════ RSVP ══════════ */
-    .rsvp-bg{background:var(--cream);}
-    .rsvp-form{
-      max-width:560px;margin:44px auto 0;background:var(--ivory);border-radius:32px;
-      padding:clamp(28px,6vw,48px) clamp(24px,6vw,44px);
-      box-shadow:0 12px 44px var(--shadow);border:1.5px solid rgba(192,97,59,0.14);
-      position:relative;overflow:hidden;
-    }
-    .rsvp-form::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--terra),var(--blush),var(--sage2),var(--rainbow4),var(--rainbow5));}
-    .rsvp-field{margin-bottom:20px;}
-    .rsvp-label{display:block;font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--brown2);margin-bottom:8px;}
-    .rsvp-input,.rsvp-textarea{
-      width:100%;padding:13px 18px;border-radius:50px;border:1.5px solid rgba(192,97,59,0.22);
-      background:var(--cream);font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--brown);
-      outline:none;transition:border-color 0.25s,box-shadow 0.25s;
-    }
-    .rsvp-textarea{border-radius:22px;resize:vertical;min-height:90px;}
-    .rsvp-input:focus,.rsvp-textarea:focus{border-color:var(--terra2);box-shadow:0 0 0 3px rgba(192,97,59,0.12);}
-    .rsvp-radio-group{display:flex;gap:12px;flex-wrap:wrap;}
-    .rsvp-radio-opt{flex:1;min-width:140px;}
-    .rsvp-radio-opt input{position:absolute;opacity:0;width:0;height:0;}
-    .rsvp-radio-opt label{
-      display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 16px;
-      border-radius:50px;border:1.5px solid rgba(192,97,59,0.22);background:var(--cream);
-      cursor:pointer;font-size:0.98rem;color:var(--brown2);transition:all 0.25s;text-align:center;
-    }
-    .rsvp-radio-opt input:checked + label{background:var(--terra);border-color:var(--terra);color:var(--ivory);box-shadow:0 6px 18px rgba(192,97,59,0.28);}
-    .rsvp-radio-opt input:focus-visible + label{outline:2px solid var(--terra2);outline-offset:2px;}
-    .rsvp-submit{
-      width:100%;padding:15px 20px;border-radius:50px;border:none;
-      background:linear-gradient(90deg,var(--terra),var(--terra2));color:var(--ivory);
-      font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:0.82rem;letter-spacing:0.2em;
-      text-transform:uppercase;cursor:pointer;transition:transform 0.25s,box-shadow 0.25s;
-      box-shadow:0 8px 24px rgba(192,97,59,0.28);
-    }
-    .rsvp-submit:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(192,97,59,0.34);}
-    .rsvp-submit:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
-    .rsvp-status{margin-top:16px;padding:14px 18px;border-radius:16px;font-size:0.94rem;text-align:center;display:none;}
-    .rsvp-status.show{display:block;}
-    .rsvp-status.success{background:rgba(139,158,128,0.16);color:#5c6e52;border:1.5px solid rgba(139,158,128,0.32);}
-    .rsvp-status.error{background:rgba(192,97,59,0.12);color:var(--terra);border:1.5px solid rgba(192,97,59,0.3);}
-    .rsvp-status.loading{background:rgba(212,165,160,0.18);color:var(--brown2);border:1.5px solid rgba(212,165,160,0.32);}
-    @media(max-width:480px){
-      .rsvp-form{padding:26px 20px;border-radius:24px;}
-    }
-
     .gift-bg{background:var(--cream);}
     .gift-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:11px;margin-top:22px;}
     .gi{background:var(--ivory);border-radius:14px;padding:15px 17px;display:flex;align-items:center;gap:11px;border:1.5px solid rgba(192,97,59,0.14);}
@@ -351,36 +305,83 @@
     .cc-role{font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:0.63rem;color:var(--brown3);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:9px;}
     .cc-num{font-size:0.95rem;color:var(--terra);}
 
+    /* ══════════ RSVP ══════════ */
+    .rsvp-bg{background:var(--cream);}
+    .rsvp-card{
+      max-width:600px;margin:40px auto 0;position:relative;overflow:hidden;
+      background:var(--ivory);border-radius:32px;
+      padding:clamp(28px,6vw,46px) clamp(22px,6vw,42px);
+      border:1.5px solid rgba(192,97,59,0.18);
+      box-shadow:0 14px 50px rgba(192,97,59,0.1);
+    }
+    .rsvp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--terra),var(--blush),var(--sage2));}
+    .rsvp-deadline{
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      text-align:center;font-family:'Josefin Sans',sans-serif;font-weight:300;
+      font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--terra2);
+      background:var(--sand2);border-radius:50px;padding:10px 18px;
+      margin:0 auto 28px;width:fit-content;max-width:100%;
+    }
+    .rsvp-field{margin-bottom:20px;}
+    .rsvp-field label{
+      display:block;font-family:'Josefin Sans',sans-serif;font-weight:300;
+      font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;
+      color:var(--brown);margin-bottom:8px;
+    }
+    .rsvp-field .opt{opacity:0.55;font-weight:300;text-transform:none;letter-spacing:0.02em;font-size:0.85em;}
+    .rsvp-field .req{color:var(--terra);}
+    .rsvp-field input[type="text"],
+    .rsvp-field input[type="number"],
+    .rsvp-field textarea{
+      width:100%;font-family:'Cormorant Garamond',serif;font-size:1.05rem;
+      color:var(--brown);background:var(--cream);
+      border:1.5px solid rgba(192,97,59,0.22);border-radius:14px;
+      padding:12px 16px;transition:border-color 0.25s, box-shadow 0.25s;
+    }
+    .rsvp-field input:focus,.rsvp-field textarea:focus{
+      outline:none;border-color:var(--terra2);
+      box-shadow:0 0 0 3px rgba(192,97,59,0.12);
+    }
+    .rsvp-field textarea{resize:vertical;min-height:78px;font-family:'Cormorant Garamond',serif;}
+    .rsvp-radio-group{display:flex;gap:12px;flex-wrap:wrap;}
+    .rsvp-radio{flex:1;min-width:150px;position:relative;display:block;}
+    .rsvp-radio input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer;}
+    .rsvp-radio-card{
+      border:1.5px solid rgba(192,97,59,0.22);border-radius:14px;
+      padding:14px 12px;text-align:center;font-family:'Cormorant Garamond',serif;
+      font-size:1rem;color:var(--brown2);background:var(--cream);
+      transition:all 0.25s;
+    }
+    .rsvp-radio input:checked + .rsvp-radio-card{
+      background:var(--terra);border-color:var(--terra);color:var(--ivory);
+      box-shadow:0 6px 18px rgba(192,97,59,0.28);
+    }
+    .rsvp-radio input:focus-visible + .rsvp-radio-card{outline:2px solid var(--terra2);outline-offset:2px;}
+    .rsvp-guest-fields{max-height:0;overflow:hidden;opacity:0;transition:max-height 0.4s ease,opacity 0.4s ease;}
+    .rsvp-guest-fields.show{max-height:420px;opacity:1;}
+    .rsvp-error{font-family:'Josefin Sans',sans-serif;font-size:0.7rem;color:#B23A2E;margin-top:6px;display:none;}
+    .rsvp-error.show{display:block;}
+    .rsvp-submit{
+      width:100%;background:var(--terra);color:var(--ivory);border:none;
+      border-radius:50px;padding:16px 24px;font-family:'Josefin Sans',sans-serif;
+      font-weight:300;font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;
+      cursor:pointer;transition:transform 0.25s,box-shadow 0.25s;
+      box-shadow:0 10px 28px rgba(192,97,59,0.28);margin-top:6px;
+    }
+    .rsvp-submit:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(192,97,59,0.36);}
+    .rsvp-submit:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+    .rsvp-thanks{display:none;text-align:center;padding:14px 0;}
+    .rsvp-thanks.show{display:block;}
+    .rsvp-thanks .rt-icon{font-size:2.8rem;margin-bottom:12px;}
+    .rsvp-thanks h3{font-family:'Playfair Display',serif;font-size:1.6rem;font-style:italic;color:var(--brown);margin-bottom:10px;}
+    .rsvp-thanks p{color:var(--brown2);font-size:1rem;line-height:1.7;}
+    .rsvp-form.hide{display:none;}
+    .rsvp-note{text-align:center;font-size:0.86rem;color:var(--brown3);margin-top:18px;font-style:italic;}
+
     .info-bar{background:linear-gradient(90deg,var(--terra),var(--terra2),var(--terra));color:var(--ivory);text-align:center;padding:11px 24px;font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:0.71rem;letter-spacing:0.2em;text-transform:uppercase;position:relative;z-index:10;}
 
     footer{background:var(--brown);color:rgba(255,245,232,0.45);text-align:center;padding:32px 24px;font-size:0.85rem;position:relative;z-index:1;}
     footer strong{color:var(--blush2);font-family:'Dancing Script',cursive;font-size:1.1rem;}
-
-    /* ── FLOATING RSVP BUTTON ── */
-    .rsvp-float{
-      position:fixed;bottom:22px;right:20px;z-index:500;
-      background:linear-gradient(90deg,var(--terra),var(--terra2));color:var(--ivory);
-      font-family:'Josefin Sans',sans-serif;font-weight:400;font-size:0.76rem;
-      letter-spacing:0.14em;text-transform:uppercase;padding:14px 22px;border-radius:50px;
-      box-shadow:0 10px 30px rgba(192,97,59,0.38);text-decoration:none;
-      display:flex;align-items:center;gap:8px;
-      opacity:0;transform:translateY(18px) scale(0.92);pointer-events:none;
-      transition:opacity 0.35s ease, transform 0.35s ease, box-shadow 0.25s ease;
-    }
-    .rsvp-float.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
-    .rsvp-float:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 14px 38px rgba(192,97,59,0.46);}
-    .rsvp-float .rf-icon{font-size:1rem;animation:rfPulse 2.2s ease-in-out infinite;}
-    @keyframes rfPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.18);}}
-    @media(max-width:480px){
-      .rsvp-float{bottom:16px;right:16px;padding:12px 18px;font-size:0.68rem;}
-    }
-
-    /* ── ADMIN LINK (deliberately subtle — blends into the footer text) ── */
-    .admin-dot{
-      color:inherit;opacity:1;text-decoration:none;padding:0 7px;cursor:default;
-      transition:color 0.2s ease;
-    }
-    .admin-dot:hover{color:rgba(255,245,232,0.85);cursor:pointer;}
 
     .hero-photo-wrap img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50% 50% 0 0 / 55% 55% 0 0;}
     .fg-big img,.fg-sm img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;}
@@ -399,8 +400,6 @@
 <body>
 
 <div id="floaters"></div>
-
-<a href="#rsvp" class="rsvp-float" id="rsvpFloat"><span class="rf-icon">🌈</span>RSVP Now</a>
 
 <div class="info-bar"> </div>
 
@@ -434,7 +433,7 @@
     </div>
     <p class="hero-name">Kaitlynn</p>
     <div class="hero-rule"></div>
-    <p class="hero-date">Thursday &nbsp;·&nbsp; August 6, 2026</p>
+    <p class="hero-date">Saturday &nbsp;·&nbsp; August 16, 2025</p>
     <p class="hero-sub">Holy Baptism &amp; First Birthday Celebration</p>
     <div class="scroll-hint">
       <span>Scroll to explore</span>
@@ -603,16 +602,16 @@
         <span class="ec-icon">⛪️</span>
         <p class="ec-type">Event One</p>
         <h3 class="ec-title">Holy Baptism</h3>
-        <div class="ec-row"><span class="ec-ri">📅</span><div><strong>Date</strong>Thursday, August 6, 2026</div></div>
+        <div class="ec-row"><span class="ec-ri">📅</span><div><strong>Date</strong>Thursday, August 6, 2025</div></div>
         <div class="ec-row"><span class="ec-ri">🕙</span><div><strong>Time</strong>9:30 AM</div></div>
         <div class="ec-row"><span class="ec-ri">⛪</span><div><strong>Venue</strong>Immaculate Conception Parish Church - Concepcion<br>M423+FMF, Bayan-Bayanan Ave, Marikina, 1807 Metro Manila</div></div>
-        <div class="ec-row"><span class="ec-ri">🕙</span><div><strong>Note</strong>Godparents are expected to arrive earlier than the given time.</div></div>
+        <div class="ec-row"><span class="ec-ri">🕙</span><div><strong>Note</strong>Godparents are expected to earlier the given time.</div></div>
       </div>
       <div class="ecard reveal">
         <span class="ec-icon">🎂</span>
         <p class="ec-type">Event Two</p>
         <h3 class="ec-title">1st Birthday Party</h3>
-        <div class="ec-row"><span class="ec-ri">📅</span><div><strong>Date</strong>Thursday, August 6, 2026</div></div>
+        <div class="ec-row"><span class="ec-ri">📅</span><div><strong>Date</strong>Thursday, August 6, 2025</div></div>
         <div class="ec-row"><span class="ec-ri">🕐</span><div><strong>Time</strong>11:00 AM onwards</div></div>
         <div class="ec-row"><span class="ec-ri">🏡</span><div><strong>Venue</strong>Max's<br>Sumulong Hwy, Marikina, 1800 Metro Manila</div></div>
       </div>
@@ -668,7 +667,7 @@
           <li class="reveal"><span class="gp-num">14</span><span class="gp-name">Jenny Mendoza</span>🌸</li>
           <li class="reveal"><span class="gp-num">15</span><span class="gp-name">Glenys Arizo</span>🌸</li>
           <li class="reveal"><span class="gp-num">16</span><span class="gp-name">Glenda Reyes</span>🌸</li>
-          <li class="reveal"><span class="gp-num">16</span><span class="gp-name">Milcah Escriba</span>🌸</li>
+          <li class="reveal"><span class="gp-num">17</span><span class="gp-name">Milcah Escriba</span>🌸</li>
         </ul>
       </div>
 
@@ -716,54 +715,84 @@
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════
-     RSVP
-══════════════════════════════════════════ -->
-<svg class="wave" viewBox="0 0 1440 52" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="background:var(--ivory);"><path d="M0,52 C480,0 960,52 1440,0 L1440,52 L0,52 Z" fill="#FAF3E8"/></svg>
-<section class="sec rsvp-bg" id="rsvp">
+<svg class="wave" viewBox="0 0 1440 52" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="background:var(--ivory);"><path d="M0,52 C480,0 960,52 1440,0 L1440,52 L0,52 Z" fill="var(--cream)"/></svg>
+<section class="sec gift-bg">
   <div class="inner">
-    <p class="sec-lbl">🌈 Kindly Respond By August 1 🌈</p>
-    <h2 class="sec-title">Will You <em>Join Us</em>?</h2>
-    <p class="sec-body">We'd love to know if you'll be there to celebrate Kaitlynn's baptism and first birthday!</p>
+    <p class="sec-lbl">🎁 With Grateful Hearts 🎁</p>
+    <h2 class="sec-title">Gift <em>Registry</em></h2>
+    <p class="sec-body">With all that we have, we've been truly blessed. Your prayers and presence are the most precious thing you can give.</p>
+    <p class="sec-body" style="margin-top:12px;">But if you desire to give nonetheless, these are a few things we'd truly appreciate:</p>
+    <div class="gift-grid">
+      <div class="gi reveal"><span class="gi-ic">🍼</span><span class="gi-tx">Unilove Diapers (Large)</span></div>
+      <div class="gi reveal"><span class="gi-ic">👕</span><span class="gi-tx">Clothes, size 2–3 years old</span></div>
+      <div class="gi reveal"><span class="gi-ic">🧴</span><span class="gi-tx">Cetaphil Gentle Wash &amp; Shampoo</span></div>
+      <div class="gi reveal"><span class="gi-ic">💝</span><span class="gi-tx">Monetary Gift for Savings</span></div>
+    </div>
+    <div class="gift-note reveal">
+      🌿 Just because we have ideas doesn't mean you're obligated to give. Love, prayer, and your presence are the most important gift of all for Kaitlynn. 🌈
+    </div>
+  </div>
+</section>
 
-    <form class="rsvp-form" id="rsvpForm">
-      <div class="rsvp-field">
-        <label class="rsvp-label" for="rsvpName">Full Name</label>
-        <input class="rsvp-input" type="text" id="rsvpName" name="rsvpName" placeholder="Juan Dela Cruz" required/>
-      </div>
+<svg class="wave" viewBox="0 0 1440 52" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="background:var(--cream);"><path d="M0,0 C480,52 960,0 1440,52 L1440,52 L0,52 Z" fill="var(--ivory)"/></svg>
+<section class="sec rsvp-bg">
+  <div class="inner">
+    <p class="sec-lbl">🌼 Kindly Respond 🌼</p>
+    <h2 class="sec-title">Will You <em>Join Us?</em></h2>
+    <p class="sec-body">Your presence would mean the world to us. Please take a moment to let us know if you'll be able to celebrate with Kaitlynn.</p>
 
-      <div class="rsvp-field">
-        <label class="rsvp-label">Will you be attending?</label>
-        <div class="rsvp-radio-group">
-          <div class="rsvp-radio-opt">
-            <input type="radio" name="rsvpAttending" id="rsvpYes" value="Yes" required/>
-            <label for="rsvpYes">🌸 Joyfully Accepts</label>
+    <div class="rsvp-card">
+      <div class="rsvp-deadline">📅 Kindly RSVP by July 30, 2025</div>
+
+      <form id="rsvpForm" class="rsvp-form" novalidate>
+        <div class="rsvp-field">
+          <label for="rsvpName">Full Name <span class="req">*</span></label>
+          <input type="text" id="rsvpName" name="name" placeholder="e.g. Juan Dela Cruz" autocomplete="name"/>
+          <p class="rsvp-error" id="errName">Please enter your name.</p>
+        </div>
+
+        <div class="rsvp-field">
+          <label>Will you be attending? <span class="req">*</span></label>
+          <div class="rsvp-radio-group">
+            <label class="rsvp-radio">
+              <input type="radio" name="attending" value="Yes"/>
+              <div class="rsvp-radio-card">🌈 Yes, joyfully!</div>
+            </label>
+            <label class="rsvp-radio">
+              <input type="radio" name="attending" value="No"/>
+              <div class="rsvp-radio-card">🌧️ No, with regret</div>
+            </label>
           </div>
-          <div class="rsvp-radio-opt">
-            <input type="radio" name="rsvpAttending" id="rsvpNo" value="No"/>
-            <label for="rsvpNo">🍃 Regretfully Declines</label>
+          <p class="rsvp-error" id="errAttending">Please choose one.</p>
+        </div>
+
+        <div class="rsvp-guest-fields" id="guestFields">
+          <div class="rsvp-field">
+            <label for="rsvpGuests">Total Number of Guests <span class="opt">(including you)</span></label>
+            <input type="number" id="rsvpGuests" name="guests" min="1" max="10" value="1"/>
+          </div>
+          <div class="rsvp-field">
+            <label for="rsvpGuestNames">Guest Names <span class="opt">(optional)</span></label>
+            <textarea id="rsvpGuestNames" name="guestNames" placeholder="Names of your companions, one per line"></textarea>
           </div>
         </div>
+
+        <div class="rsvp-field">
+          <label for="rsvpMessage">Message for Kaitlynn's Family <span class="opt">(optional)</span></label>
+          <textarea id="rsvpMessage" name="message" placeholder="Leave a sweet note or well-wishes 🌸"></textarea>
+        </div>
+
+        <button type="submit" class="rsvp-submit" id="rsvpSubmitBtn">Send RSVP 🌿</button>
+      </form>
+
+      <div class="rsvp-thanks" id="rsvpThanks">
+        <div class="rt-icon">🌸</div>
+        <h3>Thank You!</h3>
+        <p>Your RSVP has been received. We can't wait to celebrate Kaitlynn's ONE-derful day with you!</p>
       </div>
 
-      <div class="rsvp-field">
-        <label class="rsvp-label" for="rsvpGuests">Number of Guests (including you)</label>
-        <input class="rsvp-input" type="number" id="rsvpGuests" name="rsvpGuests" min="1" max="10" value="1"/>
-      </div>
-
-      <div class="rsvp-field">
-        <label class="rsvp-label" for="rsvpContact">Contact Number (optional)</label>
-        <input class="rsvp-input" type="tel" id="rsvpContact" name="rsvpContact" placeholder="09XX-XXX-XXXX"/>
-      </div>
-
-      <div class="rsvp-field">
-        <label class="rsvp-label" for="rsvpMessage">Message for Kaitlynn (optional)</label>
-        <textarea class="rsvp-textarea" id="rsvpMessage" name="rsvpMessage" placeholder="Share your blessing or well-wishes..."></textarea>
-      </div>
-
-      <button type="submit" class="rsvp-submit" id="rsvpSubmitBtn">Send My RSVP</button>
-      <div class="rsvp-status" id="rsvpStatus"></div>
-    </form>
+      <p class="rsvp-note">Need to change your response? Just submit the form again with the same name.</p>
+    </div>
   </div>
 </section>
 
@@ -777,9 +806,9 @@
 </section>
 
 <footer>
-  <p style="margin-top:7px;font-size:0.77rem;">August 6, 2026 &nbsp;·&nbsp; Marikina &nbsp;·&nbsp; Baptism &amp; 1st Birthday of Kaitlynn</p>
+  <p style="margin-top:7px;font-size:0.77rem;">August 16, 2025 &nbsp;·&nbsp; Quezon City &nbsp;·&nbsp; Baptism &amp; 1st Birthday of Kaitlynn</p>
   <p style="margin-top:18px;font-size:0.67rem;letter-spacing:0.16em;text-transform:uppercase;opacity:0.44;">
-    © Kaitlynn's Birthday Celebration. All Rights Reserved. <a href="dashboard.html" class="admin-dot" target="_blank" rel="noopener">·</a>
+    © Kaitlynn's Birthday Celebration. All Rights Reserved.
   </p>
 </footer>
 
@@ -863,6 +892,78 @@ function closeLB(){
 }
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLB(); });
 
+/* ══════════ RSVP → GOOGLE SHEETS ══════════
+   1. Deploy the paired Apps Script (Code.gs) as a Web App
+      (Execute as: Me, Who has access: Anyone).
+   2. Paste the resulting /exec URL below.
+──────────────────────────────────────────── */
+const RSVP_API_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+(function(){
+  const form       = document.getElementById('rsvpForm');
+  if(!form) return;
+  const guestFields = document.getElementById('guestFields');
+  const thanks       = document.getElementById('rsvpThanks');
+  const submitBtn     = document.getElementById('rsvpSubmitBtn');
+  const nameInput       = document.getElementById('rsvpName');
+  const errName          = document.getElementById('errName');
+  const errAttending      = document.getElementById('errAttending');
+  const radios              = form.querySelectorAll('input[name="attending"]');
+
+  radios.forEach(r => r.addEventListener('change', () => {
+    if(r.checked && r.value === 'Yes'){
+      guestFields.classList.add('show');
+    } else if(r.checked){
+      guestFields.classList.remove('show');
+    }
+    errAttending.classList.remove('show');
+  }));
+
+  nameInput.addEventListener('input', () => errName.classList.remove('show'));
+
+  function sendRSVP(payload){
+    return fetch(RSVP_API_URL, { method:'POST', body: payload })
+      .catch(() => fetch(RSVP_API_URL, { method:'POST', mode:'no-cors', body: payload }));
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    let valid = true;
+
+    if(!nameInput.value.trim()){
+      errName.classList.add('show');
+      valid = false;
+    }
+    const attending = form.querySelector('input[name="attending"]:checked');
+    if(!attending){
+      errAttending.classList.add('show');
+      valid = false;
+    }
+    if(!valid) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    const payload = new URLSearchParams();
+    payload.append('name', nameInput.value.trim());
+    payload.append('attending', attending.value);
+    payload.append('guests', attending.value === 'Yes' ? (document.getElementById('rsvpGuests').value || '1') : '0');
+    payload.append('guestNames', document.getElementById('rsvpGuestNames').value.trim());
+    payload.append('message', document.getElementById('rsvpMessage').value.trim());
+
+    sendRSVP(payload)
+      .then(() => {
+        form.classList.add('hide');
+        thanks.classList.add('show');
+      })
+      .catch(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send RSVP 🌿';
+        alert('Something went wrong sending your RSVP. Please check your connection and try again.');
+      });
+  });
+})();
+
 function openLBdress(){
   const img16 = document.getElementById('img_16');
   const lbImg = document.getElementById('lbImg');
@@ -924,118 +1025,6 @@ const obs = new IntersectionObserver(entries=>{
   entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
 },{threshold:0.08});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-
-/* ── FLOATING RSVP BUTTON VISIBILITY ──────────────────────────────
-   Shows once the visitor scrolls past the hero, and hides again
-   while the RSVP section itself is on screen (no point nagging
-   someone who is already looking at the form).
-──────────────────────────────────────────────────────────────── */
-(function(){
-  const floatBtn   = document.getElementById('rsvpFloat');
-  const rsvpSection = document.getElementById('rsvp');
-  const heroSection  = document.querySelector('.hero');
-  if (!floatBtn || !rsvpSection || !heroSection) return;
-
-  let pastHero    = false;
-  let rsvpVisible = false;
-
-  function update(){
-    if (pastHero && !rsvpVisible) {
-      floatBtn.classList.add('show');
-    } else {
-      floatBtn.classList.remove('show');
-    }
-  }
-
-  const heroObs = new IntersectionObserver(entries=>{
-    entries.forEach(entry => { pastHero = !entry.isIntersecting; });
-    update();
-  }, { threshold: 0 });
-  heroObs.observe(heroSection);
-
-  const rsvpObs = new IntersectionObserver(entries=>{
-    entries.forEach(entry => { rsvpVisible = entry.isIntersecting; });
-    update();
-  }, { threshold: 0.15 });
-  rsvpObs.observe(rsvpSection);
-
-  floatBtn.addEventListener('click', function(e){
-    e.preventDefault();
-    rsvpSection.scrollIntoView({ behavior:'smooth', block:'start' });
-  });
-})();
-
-/* ══════════════════════════════════════════
-   RSVP — connects to a Google Apps Script
-   Web App bound to a Google Sheet.
-   See the setup guide provided alongside this
-   file for how to get this URL.
-══════════════════════════════════════════ */
-const RSVP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydlS6fs5_BJk6U6HuAU_fYt2vrz0mofYyaLm64tL_bBuEFXSNuwNf8xj-A0KubuHmB/exec";
-
-document.getElementById('rsvpForm').addEventListener('submit', function(e){
-  e.preventDefault();
-
-  const btn    = document.getElementById('rsvpSubmitBtn');
-  const status = document.getElementById('rsvpStatus');
-  const name      = document.getElementById('rsvpName').value.trim();
-  const attending = document.querySelector('input[name="rsvpAttending"]:checked');
-  const guests    = document.getElementById('rsvpGuests').value || '1';
-  const contact   = document.getElementById('rsvpContact').value.trim();
-  const message   = document.getElementById('rsvpMessage').value.trim();
-
-  function showStatus(text, type){
-    status.textContent = text;
-    status.className   = 'rsvp-status show ' + type;
-  }
-
-  if(!name || !attending){
-    showStatus('Please fill in your name and let us know if you can make it 💛', 'error');
-    return;
-  }
-
-  if(RSVP_SCRIPT_URL.indexOf('PASTE_YOUR') !== -1){
-    showStatus('The RSVP form isn\u2019t connected yet — please message the family directly for now.', 'error');
-    return;
-  }
-
-  btn.disabled = true;
-  showStatus('Sending your RSVP...', 'loading');
-
-  fetch(RSVP_SCRIPT_URL, {
-    method: 'POST',
-    // text/plain avoids a CORS preflight request, which Apps Script
-    // web apps don't handle — this is the standard workaround.
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify({
-      name: name,
-      attending: attending.value,
-      guests: guests,
-      contact: contact,
-      message: message
-    })
-  })
-  .then(function(r){ return r.json(); })
-  .then(function(data){
-    if (data && data.result === 'error') {
-      showStatus('Something went wrong on our end. Please try again shortly.', 'error');
-      btn.disabled = false;
-      return;
-    }
-    showStatus(
-      attending.value === 'Yes'
-        ? 'Thank you! We can\u2019t wait to celebrate with you 🌈'
-        : 'Thanks for letting us know — you\u2019ll be missed! 💛',
-      'success'
-    );
-    document.getElementById('rsvpForm').reset();
-    btn.disabled = false;
-  })
-  .catch(function(){
-    showStatus('Something went wrong. Please check your connection and try again.', 'error');
-    btn.disabled = false;
-  });
-});
 </script>
 </body>
 </html>
