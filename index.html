@@ -268,10 +268,10 @@
     .dress-left{}
     .dress-note{font-size:1.05rem;line-height:1.8;color:var(--brown2);margin-bottom:24px;}
     .dress-note strong{color:var(--terra);font-style:italic;}
-    .palette{display:flex;flex-wrap:wrap;gap:14px;}
-    .sw{display:flex;flex-direction:column;align-items:center;gap:8px;}
-    .sw-c{width:54px;height:54px;border-radius:50%;box-shadow:0 4px 14px rgba(92,61,46,0.16);}
-    .sw-l{font-size:0.68rem;color:var(--brown3);letter-spacing:0.04em;text-align:center;line-height:1.3;}
+    .palette{display:flex;flex-wrap:wrap;gap:clamp(8px,2.5vw,14px);justify-content:flex-start;}
+    .sw{display:flex;flex-direction:column;align-items:center;gap:6px;flex:0 1 clamp(56px,17vw,72px);}
+    .sw-c{width:clamp(40px,13vw,54px);height:clamp(40px,13vw,54px);border-radius:50%;box-shadow:0 4px 14px rgba(92,61,46,0.16);}
+    .sw-l{font-size:clamp(0.58rem,1.8vw,0.68rem);color:var(--brown3);letter-spacing:0.04em;text-align:center;line-height:1.3;}
     .dress-photo{
       border-radius:80px 20px 80px 20px;overflow:hidden;
       box-shadow:0 10px 40px var(--shadow);
@@ -289,6 +289,7 @@
     @media(max-width:680px){
       .dress-inner{grid-template-columns:1fr;gap:28px;}
       .dress-photo{aspect-ratio:3/2;}
+      .palette{justify-content:center;}
     }
 
     .gift-bg{background:var(--cream);}
@@ -730,68 +731,6 @@
     </div>
     <div class="gift-note reveal">
       🌿 Just because we have gift ideas doesn't mean you're obligated to give. Love, prayer, and your presence are the most important gift of all for Kaitlynn. 🌈
-    </div>
-  </div>
-</section>
-
-<svg class="wave" viewBox="0 0 1440 52" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="background:var(--cream);"><path d="M0,0 C480,52 960,0 1440,52 L1440,52 L0,52 Z" fill="var(--ivory)"/></svg>
-<section class="sec rsvp-bg">
-  <div class="inner">
-    <p class="sec-lbl">🌼 Kindly Respond 🌼</p>
-    <h2 class="sec-title">Will You <em>Join Us?</em></h2>
-    <p class="sec-body">Your presence would mean the world to us. Please take a moment to let us know if you'll be able to celebrate with Kaitlynn.</p>
-
-    <div class="rsvp-card">
-      <div class="rsvp-deadline">📅 Kindly RSVP by July 30, 2025</div>
-
-      <form id="rsvpForm" class="rsvp-form" novalidate>
-        <div class="rsvp-field">
-          <label for="rsvpName">Full Name <span class="req">*</span></label>
-          <input type="text" id="rsvpName" name="name" placeholder="e.g. Juan Dela Cruz" autocomplete="name"/>
-          <p class="rsvp-error" id="errName">Please enter your name.</p>
-        </div>
-
-        <div class="rsvp-field">
-          <label>Will you be attending? <span class="req">*</span></label>
-          <div class="rsvp-radio-group">
-            <label class="rsvp-radio">
-              <input type="radio" name="attending" value="Yes"/>
-              <div class="rsvp-radio-card">🌈 Yes, joyfully!</div>
-            </label>
-            <label class="rsvp-radio">
-              <input type="radio" name="attending" value="No"/>
-              <div class="rsvp-radio-card">🌧️ No, with regret</div>
-            </label>
-          </div>
-          <p class="rsvp-error" id="errAttending">Please choose one.</p>
-        </div>
-
-        <div class="rsvp-guest-fields" id="guestFields">
-          <div class="rsvp-field">
-            <label for="rsvpGuests">Total Number of Guests <span class="opt">(including you)</span></label>
-            <input type="number" id="rsvpGuests" name="guests" min="1" max="10" value="1"/>
-          </div>
-          <div class="rsvp-field">
-            <label for="rsvpGuestNames">Guest Names <span class="opt">(optional)</span></label>
-            <textarea id="rsvpGuestNames" name="guestNames" placeholder="Names of your companions, one per line"></textarea>
-          </div>
-        </div>
-
-        <div class="rsvp-field">
-          <label for="rsvpMessage">Message for Kaitlynn's Family <span class="opt">(optional)</span></label>
-          <textarea id="rsvpMessage" name="message" placeholder="Leave a sweet note or well-wishes 🌸"></textarea>
-        </div>
-
-        <button type="submit" class="rsvp-submit" id="rsvpSubmitBtn">Send RSVP 🌿</button>
-      </form>
-
-      <div class="rsvp-thanks" id="rsvpThanks">
-        <div class="rt-icon">🌸</div>
-        <h3>Thank You!</h3>
-        <p>Your RSVP has been received. We can't wait to celebrate Kaitlynn's ONE-derful day with you!</p>
-      </div>
-
-      <p class="rsvp-note">Need to change your response? Just submit the form again with the same name.</p>
     </div>
   </div>
 </section>
